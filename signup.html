@@ -14,7 +14,7 @@
 <div class="reg">
     <h1 style="color: rgb(226, 226, 226); font-size: 16px;">...</h1>
     <h2>Sign Up</h2>
-    <input style="margin-top: 4vw;" type="username" value="" id="username" placeholder="Username" required><br>
+    <input style="margin-top: 2vw;" type="username" value="" id="username" placeholder="Username" required><br>
     <input style="margin-top: 2vw;" type="email" value="" id="email" placeholder="Email" required><br>
     <input style="margin-top: 2vw;" type="password" value="" id="password" placeholder="Password" required><br>
     <button class="SignUp" id="submit"><p class="sig">Sign Up</p></button><br>
@@ -258,7 +258,7 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
   import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
-  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
   const firebaseConfig = {
       apiKey: "AIzaSyDFMiKbqbngn0kd5bvRmaU_zP-Rmfp-FLc",
@@ -272,25 +272,25 @@
     };
 
   const app = initializeApp(firebaseConfig);
-  const auth = getAuth();
+  const auth = getAuth(); // Получаем объект аутентификации
   const db = getDatabase(app);
 
   document.getElementById("submit").addEventListener('click', function(e){
     e.preventDefault();
 
-    const email = document.getElementById("email").value; 
+    const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
+    const username = document.getElementById("username").value;
 
-    signInWithEmailAndPassword(auth, email, password)
+    createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        // Перенаправление на другую страницу
-        window.location.href = "vote.html"; // Замените "menu.html" на нужный URL
+        window.location.href = "vote.html";
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        alert("Ошибка входа");
+        alert("Ошибка регистрации: " + errorMessage);
       });
   });
 </script>
